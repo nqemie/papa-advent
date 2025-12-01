@@ -1,0 +1,198 @@
+// Sélectionner tous les éléments étoiles
+const stars = document.querySelectorAll('.star');
+const popup = document.getElementById('popup');
+const closePopup = document.getElementById('closePopup');
+const popupGift = document.querySelector('.popup-gift');
+const lockedPopup = document.getElementById('lockedPopup');
+const closeLocked = document.getElementById('closeLocked');
+const countdownElement = document.getElementById('countdown');
+
+// Photos pour Maman (une par jour)
+const gifts = {
+    1: "maman-1.jpg",
+    2: "maman-2.jpg",
+    3: "maman-3.jpg",
+    4: "maman-4.jpg",
+    5: "maman-5.jpg",
+    6: "maman-6.jpg",
+    7: "maman-7.jpg",
+    8: "maman-8.jpg",
+    9: "maman-9.jpg",
+    10: "maman-10.jpg",
+    11: "maman-11.jpg",
+    12: "maman-12.jpg",
+    13: "maman-13.jpg",
+    14: "maman-14.jpg",
+    15: "maman-15.jpg",
+    16: "maman-16.jpg",
+    17: "maman-17.jpg",
+    18: "maman-18.jpg",
+    19: "maman-19.jpg",
+    20: "maman-20.jpg",
+    21: "maman-21.jpg",
+    22: "maman-22.jpg",
+    23: "maman-23.jpg",
+    24: "maman-24.jpg"
+};
+
+// Fonction pour vérifier si une case peut être ouverte
+function canOpenDay(day) {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth(); // 0 = janvier, 11 = décembre
+
+    // ICI tu as mis 10 pour tester en novembre.
+    // Pour décembre seulement, remets 11.
+    if (currentMonth === 11) {
+        const unlockDate = new Date(currentYear, 11, day, 0, 0, 0); 
+        return now >= unlockDate;
+    }
+
+    if (currentMonth > 11 || (currentMonth === 0 && now.getFullYear() > currentYear)) {
+        return true;
+    }
+
+    return false;
+}
+
+// Fonction pour calculer le temps restant jusqu'à l'ouverture
+function getTimeUntilUnlock(day) {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const unlockDate = new Date(currentYear, 11, day, 0, 0, 0);
+
+    const diff = unlockDate - now;
+
+    if (diff <= 0) return "maintenant !";
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+    if (days > 0) {
+        return `${days} jour${days > 1 ? 's' : ''} et ${hours}h`;
+    } else if (hours > 0) {
+        return `${hours}h et ${minutes}min`;
+    } else {
+        return `${minutes} minute${minutes > 1 ? 's' : ''}`;
+    }
+}
+
+// Ajouter les cadenas et gérer les clics
+stars.forEach(star => {
+    const day = parseInt(star.getAttribute('data-day'));
+
+    // Vérifier si la case peut être ouverte
+    if (!canOpenDay(day)) {
+        star.classList.add('locked');
+    }
+
+    star.addEventListener('click', function () {
+        const day = parseInt(this.getAttribute('data-day'));
+
+        // Si la case est verrouillée
+        if (!canOpenDay(day)) {
+            const timeLeft = getTimeUntilUnlock(day);
+            countdownElement.textContent = timeLeft;
+            lockedPopup.classList.add('active');
+            return;
+        }
+
+        // Si la case est déverrouillée, afficher la photo
+        const fileName = gifts[day];
+
+        popupGift.innerHTML = '';
+
+        const giftCard = document.createElement('div');
+        giftCard.className = 'gift-card';
+
+        const img = document.createElement('img');
+        img.src = `images/maman/${fileName}`;
+        img.className = 'gift-photo';
+
+        giftCard.appendChild(img);
+        popupGift.appendChild(giftCard);
+
+        popup.classList.add('active');
+    }); // ← cette accolade manquait
+});
+
+// Fermer le popup cadeau
+closePopup.addEventListener('click', function () {
+    popup.classList.remove('active');
+});
+
+popup.addEventListener('click', function (e) {
+    if (e.target === popup) {
+        popup.classList.remove('active');
+    }
+});
+
+// Fermer le popup verrouillage
+closeLocked.addEventListener('click', function () {
+    lockedPopup.classList.remove('active');
+});
+
+lockedPopup.addEventListener('click', function (e) {
+    if (e.target === lockedPopup) {
+        lockedPopup.classList.remove('active');
+    }
+});
+
+// Fermer avec la touche Escape
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        if (popup.classList.contains('active')) {
+            popup.classList.remove('active');
+        }
+        if (lockedPopup.classList.contains('active')) {
+            lockedPopup.classList.remove('active');
+        }
+    }
+});
+
+// EFFET NEIGE
+function createSnowflakes() {
+    const snowflakeChars = ['❄', '❅', '❆', '✻', '✼', '❉'];
+    const snowContainer = document.body;
+
+    for (let i = 0; i < 50; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.className = 'snowflake';
+        snowflake.innerHTML = snowflakeChars[Math.floor(Math.random() * snowflakeChars.length)];
+
+        snowflake.style.left = Math.random() * 100 + '%';
+        snowflake.style.fontSize = (Math.random() * 1.5 + 0.5) + 'em';
+        snowflake.style.animationDelay = Math.random() * 10 + 's';
+        snowflake.style.animationDuration = (Math.random() * 10 + 5) + 's';
+
+        snowContainer.appendChild(snowflake);
+    }
+}
+
+window.addEventListener('load', createSnowflakes);
+
+// POPUP MESSAGE SECRET (enveloppe)
+const envelopeBtn = document.getElementById('envelopeBtn');
+const messagePopup = document.getElementById('messagePopup');
+const closeMessage = document.getElementById('closeMessage');
+
+envelopeBtn.addEventListener('click', function () {
+    messagePopup.classList.add('active');
+});
+
+closeMessage.addEventListener('click', function () {
+    messagePopup.classList.remove('active');
+});
+
+messagePopup.addEventListener('click', function (e) {
+    if (e.target === messagePopup) {
+        messagePopup.classList.remove('active');
+    }
+});
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && messagePopup.classList.contains('active')) {
+        messagePopup.classList.remove('active');
+    }
+});
