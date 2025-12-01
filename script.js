@@ -7,33 +7,34 @@ const lockedPopup = document.getElementById('lockedPopup');
 const closeLocked = document.getElementById('closeLocked');
 const countdownElement = document.getElementById('countdown');
 
-// Photos pour Maman (une par jour)
+// Photos pour Papa (une par jour)
 const gifts = {
-    1: "maman-1.jpg",
-    2: "maman-2.jpg",
-    3: "maman-3.jpg",
-    4: "maman-4.jpg",
-    5: "maman-5.jpg",
-    6: "maman-6.jpg",
-    7: "maman-7.jpg",
-    8: "maman-8.jpg",
-    9: "maman-9.jpg",
-    10: "maman-10.jpg",
-    11: "maman-11.jpg",
-    12: "maman-12.jpg",
-    13: "maman-13.jpg",
-    14: "maman-14.jpg",
-    15: "maman-15.jpg",
-    16: "maman-16.jpg",
-    17: "maman-17.jpg",
-    18: "maman-18.jpg",
-    19: "maman-19.jpg",
-    20: "maman-20.jpg",
-    21: "maman-21.jpg",
-    22: "maman-22.jpg",
-    23: "maman-23.jpg",
-    24: "maman-24.jpg"
+    1: "papa-1.jpg",
+    2: "papa-2.jpg",
+    3: "papa-3.jpg",
+    4: "papa-4.jpg",
+    5: "papa-5.jpg",
+    6: "papa-6.jpg",
+    7: "papa-7.jpg",
+    8: "papa-8.jpg",
+    9: "papa-9.jpg",
+    10: "papa-10.jpg",
+    11: "papa-11.jpg",
+    12: "papa-12.jpg",
+    13: "papa-13.jpg",
+    14: "papa-14.jpg",
+    15: "papa-15.jpg",
+    16: "papa-16.jpg",
+    17: "papa-17.jpg",
+    18: "papa-18.jpg",
+    19: "papa-19.jpg",
+    20: "papa-20.jpg",
+    21: "papa-21.jpg",
+    22: "papa-22.jpg",
+    23: "papa-23.jpg",
+    24: "papa-24.jpg"
 };
+
 
 // Fonction pour vérifier si une case peut être ouverte
 function canOpenDay(day) {
