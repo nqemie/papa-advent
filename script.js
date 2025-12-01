@@ -35,35 +35,34 @@ const gifts = {
     24: "papa-24.jpg"
 };
 
-
-// Fonction pour vérifier si une case peut être ouverte
+// Vérifier si une case peut être ouverte
 function canOpenDay(day) {
     const now = new Date();
     const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth(); // 0 = janvier, 11 = décembre
+    const currentMonth = now.getMonth(); // 0 = janv, 11 = déc
 
-    // ICI tu as mis 10 pour tester en novembre.
-    // Pour décembre seulement, remets 11.
+    // Décembre uniquement
     if (currentMonth === 11) {
-        const unlockDate = new Date(currentYear, 11, day, 0, 0, 0); 
+        const unlockDate = new Date(currentYear, 11, day, 0, 0, 0);
         return now >= unlockDate;
     }
 
+    // Après décembre : tout est ouvert
     if (currentMonth > 11 || (currentMonth === 0 && now.getFullYear() > currentYear)) {
         return true;
     }
 
+    // Avant décembre : tout verrouillé
     return false;
 }
 
-// Fonction pour calculer le temps restant jusqu'à l'ouverture
+// Temps restant
 function getTimeUntilUnlock(day) {
     const now = new Date();
     const currentYear = now.getFullYear();
     const unlockDate = new Date(currentYear, 11, day, 0, 0, 0);
 
     const diff = unlockDate - now;
-
     if (diff <= 0) return "maintenant !";
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -79,11 +78,10 @@ function getTimeUntilUnlock(day) {
     }
 }
 
-// Ajouter les cadenas et gérer les clics
+// Cadenas + clics
 stars.forEach(star => {
     const day = parseInt(star.getAttribute('data-day'));
 
-    // Vérifier si la case peut être ouverte
     if (!canOpenDay(day)) {
         star.classList.add('locked');
     }
@@ -91,7 +89,7 @@ stars.forEach(star => {
     star.addEventListener('click', function () {
         const day = parseInt(this.getAttribute('data-day'));
 
-        // Si la case est verrouillée
+        // Case verrouillée → popup verrouillage
         if (!canOpenDay(day)) {
             const timeLeft = getTimeUntilUnlock(day);
             countdownElement.textContent = timeLeft;
@@ -99,7 +97,7 @@ stars.forEach(star => {
             return;
         }
 
-        // Si la case est déverrouillée, afficher la photo
+        // Case ouverte → afficher la photo
         const fileName = gifts[day];
 
         popupGift.innerHTML = '';
@@ -115,10 +113,10 @@ stars.forEach(star => {
         popupGift.appendChild(giftCard);
 
         popup.classList.add('active');
-
+    });
 });
 
-// Fermer le popup cadeau
+// Fermer popup photo
 closePopup.addEventListener('click', function () {
     popup.classList.remove('active');
 });
@@ -129,7 +127,7 @@ popup.addEventListener('click', function (e) {
     }
 });
 
-// Fermer le popup verrouillage
+// Fermer popup verrouillage
 closeLocked.addEventListener('click', function () {
     lockedPopup.classList.remove('active');
 });
@@ -140,19 +138,15 @@ lockedPopup.addEventListener('click', function (e) {
     }
 });
 
-// Fermer avec la touche Escape
+// Escape
 document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
-        if (popup.classList.contains('active')) {
-            popup.classList.remove('active');
-        }
-        if (lockedPopup.classList.contains('active')) {
-            lockedPopup.classList.remove('active');
-        }
+        if (popup.classList.contains('active')) popup.classList.remove('active');
+        if (lockedPopup.classList.contains('active')) lockedPopup.classList.remove('active');
     }
 });
 
-// EFFET NEIGE
+// Neige
 function createSnowflakes() {
     const snowflakeChars = ['❄', '❅', '❆', '✻', '✼', '❉'];
     const snowContainer = document.body;
@@ -170,10 +164,9 @@ function createSnowflakes() {
         snowContainer.appendChild(snowflake);
     }
 }
-
 window.addEventListener('load', createSnowflakes);
 
-// POPUP MESSAGE SECRET (enveloppe)
+// POPUP message secret (enveloppe)
 const envelopeBtn = document.getElementById('envelopeBtn');
 const messagePopup = document.getElementById('messagePopup');
 const closeMessage = document.getElementById('closeMessage');
