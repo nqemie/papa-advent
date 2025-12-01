@@ -108,14 +108,14 @@ stars.forEach(star => {
         giftCard.className = 'gift-card';
 
         const img = document.createElement('img');
-        img.src = `images/maman/${fileName}`;
+        img.src = `images/papa/${fileName}`;
         img.className = 'gift-photo';
 
         giftCard.appendChild(img);
         popupGift.appendChild(giftCard);
 
         popup.classList.add('active');
-    }); // ← cette accolade manquait
+
 });
 
 // Fermer le popup cadeau
